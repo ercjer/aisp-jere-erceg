@@ -98,7 +98,7 @@ int readFromFile(Position p, char fileName[16]) {
 
 
 
-
+    fclose(fp);
 	return 0;
 }
 
