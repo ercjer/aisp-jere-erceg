@@ -40,9 +40,12 @@ int main() {
     scanf(" %s", name2);
 
     if (readFromFile(&first, name1) < 0) {
+        cleanList(&first);
         return 0;
     }
     if (readFromFile(&second, name2) < 0) {
+        cleanList(&first);
+        cleanList(&second);
         return 0;
     }
 
@@ -56,12 +59,20 @@ int main() {
         switch (option) {
         case 1:
             cleanList(&result);
-            sumTwoPoly(&first, &second, &result);
+            if (sumTwoPoly(&first, &second, &result) < 0) {
+                cleanList(&first);
+                cleanList(&second);
+                cleanList(&result);
+            }
             printPoly(&result);
             break;
         case 2:
             cleanList(&result);
-            multiplyTwoPoly(&first, &second, &result);
+            if (multiplyTwoPoly(&first, &second, &result) < 0) {
+                cleanList(&first);
+                cleanList(&second);
+                cleanList(&result);
+            }
             printPoly(&result);
             break;
         case 3:
@@ -92,6 +103,7 @@ int readFromFile(Position p, char fileName[16]) {
 	while (!feof(fp)) {
 		fscanf(fp, " %d %d", &koeficijent, &eksponent);
         if (addSorted(p, koeficijent, eksponent) < 0) {
+            fclose(fp);
             return -1;
         }
 	}
@@ -213,7 +225,7 @@ int printPoly(Position result) {
         }
         result = result->next;
     }
-
+    printf("\n");
 
 
     return 0;

@@ -14,7 +14,7 @@ struct person {
 	int yearOfBirth;
 
 	Position next;
-}; 
+};
 
 int addStart(Position prev);
 int printList(Position p);
@@ -40,58 +40,64 @@ int main()
 
 
 	printf("Odaberite akciju unosom broja:\n"
-			"1 - Dodavanje osobe na pocetak liste.\n"
-			"2 - Ispis liste.\n"
-			"3 - Dodavanje osobe na kraj liste.\n"
-			"4 - Trazenje osobe po imenu, prezimenu ili godini.\n"
-			"5 - Brisanje odredene osobe.\n"
-			"6 - Dodavanje osobe iza odredene.\n"
-			"7 - Dodavanje osobe ispred odredene.\n"
-			"8 - Upisuje listu u datoteku.\n"
-			"9 - Sortirano po prezimenu, ucitava listu iz datoteke.\n"
-			"10 - Izlaz iz programa.\n\n");
-			
+		"1 - Dodavanje osobe na pocetak liste.\n"
+		"2 - Ispis liste.\n"
+		"3 - Dodavanje osobe na kraj liste.\n"
+		"4 - Trazenje osobe po imenu, prezimenu ili godini.\n"
+		"5 - Brisanje odredene osobe.\n"
+		"6 - Dodavanje osobe iza odredene.\n"
+		"7 - Dodavanje osobe ispred odredene.\n"
+		"8 - Upisuje listu u datoteku.\n"
+		"9 - Sortirano po prezimenu, ucitava listu iz datoteke.\n"
+		"10 - Izlaz iz programa.\n\n");
+
 	while (isRunning) {
 		action = getAction(0);
 
 
 		switch (action) {
-		case 1: 
+		case 1:
 			if (addStart(&head) < 0) {
+				clearMemory(&head);
 				return -1;
 			}
 			break;
-		case 2: 
+		case 2:
 			printList(&head);
 			break;
 		case 3:
 			if (addEnd(&head) < 0) {
+				clearMemory(&head);
 				return -1;
 			}
 			break;
 		case 4:
 			searchList(&head);
 			break;
-		case 5: 
+		case 5:
 			deleteElement(&head);
 			break;
-		case 6: 
+		case 6:
 			if (addElementAfter(&head) < 0) {
+				clearMemory(&head);
 				return -1;
 			}
 			break;
 		case 7:
 			if (addElementBefore(&head) < 0) {
+				clearMemory(&head);
 				return -1;
 			}
 			break;
 		case 8:
 			if (writeListInFile(&head) < 0) {
+				clearMemory(&head);
 				return -1;
 			}
 			break;
 		case 9:
 			if (readListFromFile(&head) < 0) {
+				clearMemory(&head);
 				return -1;
 			}
 			break;
@@ -99,7 +105,7 @@ int main()
 			isRunning = 0;
 			clearMemory(&head);
 			break;
-		default: 
+		default:
 			printf("Neispravan unos.\n");
 		}
 	}
@@ -121,7 +127,7 @@ int addStart(Position prev) {
 
 	p->next = prev->next;
 	prev->next = p;
-	
+
 	return 0;
 }
 
@@ -168,8 +174,6 @@ int searchList(Position p) {
 		return 0;
 	}
 
-	//printf("Izaberi po cemu zelis traziti:\n1 - Po imenu.\n2 - Po prezimenu.\n3 - Po godini.\n");
-	//scanf(" %s", searchOption);
 	while (option > 3 || option < 1) {
 		printf("Izaberi po cemu zelis traziti:\n1 - Po imenu.\n2 - Po prezimenu.\n3 - Po godini.\n");
 		option = getAction(1);
@@ -180,15 +184,15 @@ int searchList(Position p) {
 		printf("Unesi ime: ");	scanf(" %s", searchByName);
 		while (p->next != NULL) {
 			p = p->next;
-				if (_strcmpi(p->firstName, searchByName) == 0) {
-					printf("Prvi je pronaden %s %s %d\n", p->firstName, p->lastName, p->yearOfBirth);
-					return 0;
-				}
+			if (_strcmpi(p->firstName, searchByName) == 0) {
+				printf("Prvi je pronaden %s %s %d\n", p->firstName, p->lastName, p->yearOfBirth);
+				return 0;
 			}
-			printf("Nije pronadena osoba sa imenom %s.\n", searchByName);
-			return 0;
-		
-	case 2: 
+		}
+		printf("Nije pronadena osoba sa imenom %s.\n", searchByName);
+		return 0;
+
+	case 2:
 		printf("Unesi prezime: ");	scanf(" %s", searchByName);
 		while (p->next != NULL) {
 			p = p->next;
@@ -247,7 +251,7 @@ int getAction(int actionOrSearch) {
 }
 
 int clearMemory(Position head) {
-	
+
 	while (head->next != NULL) {
 		Position p = head->next;
 		head->next = p->next;
@@ -269,10 +273,10 @@ int deleteElement(Position p) {
 	}
 
 	Position q = p->next;
-	
+
 
 	printf("Unesi ime, prezime i godinu osobe koju zelis ukloniti: ");	scanf(" %s %s %d", name, lastName, &year);
-	
+
 	do {
 		q = p->next;
 		if (_strcmpi(name, q->firstName) == 0 && _strcmpi(lastName, q->lastName) == 0 && year == q->yearOfBirth) {
@@ -281,7 +285,7 @@ int deleteElement(Position p) {
 			free(q);
 			return 0;
 		}
-		
+
 		p = p->next;
 	} while (q->next != NULL);
 
@@ -404,7 +408,7 @@ int writeListInFile(Position p) {
 
 	printf("Lista je upisana u datoteku.\n");
 
-	
+
 	fclose(f);
 	return 0;
 }
@@ -474,4 +478,3 @@ int addSorted(Position p, char name[16], char lastName[16], int year) {
 
 	return 0;
 }
-
