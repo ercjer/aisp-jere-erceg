@@ -35,10 +35,14 @@ int main()
 		
 		switch (option) {
 		case 1:
-			stack();
+			if (stack() < 0) {
+				return 0;
+			}
 			break;
 		case 2:
-			queue();
+			if (queue() < 0) {
+				return 0;
+			}
 			break;
 		case 3:
 			return 0;
